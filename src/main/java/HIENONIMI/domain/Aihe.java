@@ -1,31 +1,23 @@
 package HIENONIMI.domain;
 
-import java.util.List;
-
 public class Aihe {
 
     private Integer id;
-    private Alue alue;
+    private Integer alue_id;
     private String nimi;
-    private List<Viesti> viestit;
 
-    public Aihe(Integer id, Alue alue, String nimi, List<Viesti> viestit) {
+    public Aihe(Integer id, Integer alue_id, String nimi) {
         this.id = id;
-        this.alue = alue;
+        this.alue_id = alue_id;
         this.nimi = nimi;
-        this.viestit = viestit;
-    }
-
-    public List<Viesti> getViestit() {
-        return viestit;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public Alue getAlue() {
-        return alue;
+    public Integer getAlue() {
+        return alue_id;
     }
 
     public String getNimi() {
@@ -36,12 +28,8 @@ public class Aihe {
         this.id = id;
     }
 
-    public void setViestit(List<Viesti> viestit) {
-        this.viestit = viestit;
-    }
-
-    public void setAlue(Alue alue) {
-        this.alue = alue;
+    public void setAlue(Integer alue_id) {
+        this.alue_id = alue_id;
     }
 
     public void setNimi(String nimi) {

@@ -5,15 +5,15 @@ import java.sql.Timestamp;
 public class Viesti {
 
     private Integer id;
-    private Aihe aihe;
-    private Kayttaja kayttaja;
+    private Integer aihe_id;
+    private Integer kayttaja_id;
     private String viesti;
     private Timestamp aika;
 
-    public Viesti(Integer id, Aihe aihe, Kayttaja kayttaja, String viesti, Timestamp aika) {
+    public Viesti(Integer id, Integer aihe_id, Integer kayttaja_id, String viesti, Timestamp aika) {
         this.id = id;
-        this.aihe = aihe;
-        this.kayttaja = kayttaja;
+        this.aihe_id = aihe_id;
+        this.kayttaja_id = kayttaja_id;
         this.viesti = viesti;
         this.aika = aika;
     }
@@ -22,12 +22,12 @@ public class Viesti {
         this.id = id;
     }
 
-    public void setAihe(Aihe aihe) {
-        this.aihe = aihe;
+    public void setAihe(Integer aihe_id) {
+        this.aihe_id = aihe_id;
     }
 
-    public void setKayttaja(Kayttaja kayttaja) {
-        this.kayttaja = kayttaja;
+    public void setKayttaja(Integer kayttaja_id) {
+        this.kayttaja_id = kayttaja_id;
     }
 
     public void setViesti(String viesti) {
@@ -42,12 +42,12 @@ public class Viesti {
         return id;
     }
 
-    public Aihe getAihe() {
-        return aihe;
+    public Integer getAihe() {
+        return aihe_id;
     }
 
-    public Kayttaja getKayttaja() {
-        return kayttaja;
+    public Integer getKayttaja() {
+        return kayttaja_id;
     }
 
     public String getViesti() {
