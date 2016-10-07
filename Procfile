@@ -1,1 +1,1 @@
-web:    java -cp target/classes:target/dependency/* tikape.HIENONIMI-forum.Main
+web:    java -cp target/classes:target/dependency/* HIENONIMI.Main
