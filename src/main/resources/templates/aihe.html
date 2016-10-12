@@ -11,10 +11,10 @@
         <table>
             <tr>
                 <th>Kayttaja</th>
-                <th>Viesti</th>
+                <th>Viesti</th>                
             </tr>
             <tr th:each="viesti : ${viestit}">
-                <td> th:text="${viesti.kayttaja_id}">kayttaja</td>
+                <td th:text="${viesti.kayttajanimi}">kayttaja</td>
                 <td th:text="${viesti.viesti}">viesti</td>
             </tr>
         </table>
