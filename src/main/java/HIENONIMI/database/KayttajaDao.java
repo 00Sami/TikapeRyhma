@@ -7,7 +7,11 @@ import java.util.List;
 
 public class KayttajaDao implements Dao<Kayttaja, Integer> {
 
-     private Database database;
+    private Database database;
+
+    public KayttajaDao(Database database) {
+        this.database = database;
+    }
 
     @Override
     public Kayttaja findOne(Integer key) throws SQLException {
@@ -20,8 +24,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
             return kayttajat.get(0);
         }
     }
-    
-    
+
     public Kayttaja findOne(String nimi) throws SQLException {
         String komento = "SELECT * FROM Kayttaja WHERE name = ?";
         List<Kayttaja> kayttajat = database.queryAndCollect(komento, new KayttajaCollector(), nimi);
@@ -32,15 +35,13 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
             return kayttajat.get(0);
         }
     }
-    
-    
+
     public Kayttaja teeUusi(String nimi) throws SQLException {
         String komento = "INSERT INTO Kayttaja (nimi) VALUES (?)";
         database.update(komento, nimi);
         return findOne(nimi);
     }
-        
-    
+
     @Override
     public List<Kayttaja> findAll() throws SQLException {
         String komento = "SELECT * FROM Kayttaja";
@@ -56,6 +57,5 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
     }
-     
-     
+
 }
