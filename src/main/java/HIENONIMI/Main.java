@@ -9,7 +9,7 @@ import HIENONIMI.database.Database;
 import HIENONIMI.database.AlueDao;
 import HIENONIMI.database.KayttajaDao;
 import HIENONIMI.database.ViestiDao;
-import HIENONIMI.domain.Kayttaja;
+
 
 public class Main {
 
@@ -43,21 +43,19 @@ public class Main {
             return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
 
-        post("/:id/:aid", (req, res) -> { // ei toimi vielä
+        post("/:id/:aid", (req, res) -> { // Tämä lisää uuden käyttäjän, mutta uutta viestiä ei tule. Ongelmana onkai se, että kayttajaDao.teeUusi()-metodi sulkee tietokantayhteyden..
             String kayttaja = req.queryParams("kayttaja");
             String viesti = req.queryParams("viesti");
 
-            if (!kayttaja.isEmpty() && !viesti.isEmpty()) {
-                viestiDao.teeUusi(kayttajaDao.teeUusi(kayttaja).getId(), Integer.parseInt(req.params("aid")), viesti);
-            }
+            viestiDao.teeUusi(kayttajaDao.teeUusi(kayttaja).getId(), 2, viesti);  // tähän kakkosen paikalle aiheen id, saako sen jotenkin tosta polusta?
 
-            res.redirect("/:id/:aid");
+            res.redirect("/");
             return "";
         });
-        
+
         /*
         Näitten jälkeen pitäisi tehä POSTit. 
-        /:id         uusi aiheen teko, mahdollisesti uusi kayttaja
+        /:id         uusi aiheen teko, mahdollisesti uusi kayttaja --> tästä yritystä tossa ylempänä
         /:id/:aid    uusi viestin teko, mahdollisesti uusi kayttaja
         
         Sekä templateihin textboxit ja nappulat submittaamiseen
