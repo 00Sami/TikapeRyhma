@@ -7,16 +7,15 @@
     </head>
 
     <body>
-        <h1>Tervetuloa!</h1>
         
         <table>
             <tr>
-                <th>Alue</th>
-                <th>Viesteja</th>
+                <th>Kayttaja</th>
+                <th>Viesti</th>
             </tr>
-            <tr th:each="alue : ${alueet}">
-                <td>  <a th:href="@{~/{id}(id=${alue.id})}" th:text="${alue.nimi}">nimi</a></td>
-                <td th:text="${alue.viesteja}">viestit</td>
+            <tr th:each="viesti : ${viestit}">
+                <td> th:text="${viesti.kayttaja_id}">kayttaja</td>
+                <td th:text="${viesti.viesti}">viesti</td>
             </tr>
         </table>
 

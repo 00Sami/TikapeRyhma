@@ -7,10 +7,49 @@ import java.util.List;
 public class Database {
 
     private String databaseAddress;
+    private Connection connection;
 
-    public Database(String databaseAddress) throws ClassNotFoundException {
+    public Database(String databaseAddress) throws Exception {
         this.databaseAddress = databaseAddress;
+        this.connection = DriverManager.getConnection(databaseAddress);
     }
+    
+    
+    public <T> List<T> queryAndCollect(String query, Collector<T> col, Object... params) throws SQLException {
+        
+        List<T> rows = new ArrayList<>();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            rows.add(col.collect(rs));
+        }
+
+        rs.close();
+        stmt.close();
+        return rows;
+    }
+    
+    
+    public int update(String updateQuery, Object... params) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement(updateQuery);
+
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+
+        int changes = stmt.executeUpdate();
+       
+        stmt.close();
+
+        return changes;
+    }
+    
+    
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(databaseAddress);

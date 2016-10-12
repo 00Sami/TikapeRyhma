@@ -1,11 +1,7 @@
-
 package HIENONIMI.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import HIENONIMI.database.collector.AlueCollector;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import HIENONIMI.domain.Alue;
 
@@ -19,48 +15,27 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     @Override
     public Alue findOne(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue WHERE id = ?");
-        stmt.setObject(1, key);
+        String komento = "SELECT * FROM Alue WHERE id = ?";
+        List<Alue> alueet = database.queryAndCollect(komento, new AlueCollector(), key);
 
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
+        if (alueet.isEmpty()) {
             return null;
+        } else {
+            return alueet.get(0);
         }
-
-        Integer id = rs.getInt("id");
-        String nimi = rs.getString("nimi");
-
-        Alue a = new Alue(id, nimi);
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return a;
     }
 
     @Override
     public List<Alue> findAll() throws SQLException {
+        //tämä viesti counter on väärin. ei laske kaikkia
+        String komento = "SELECT Alue.id, Alue.nimi, count(Viesti.id) AS viesteja FROM Alue LEFT JOIN Aihe ON Alue.id = Aihe.Alue_id LEFT JOIN Viesti ON Aihe.id = Viesti.Aihe_id GROUP BY Alue.id";
+        List<Alue> alueet = database.queryAndCollect(komento, new AlueCollector());
 
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Alue");
-
-        ResultSet rs = stmt.executeQuery();
-        List<Alue> alueet = new ArrayList<>();
-        while (rs.next()) {
-            Integer id = rs.getInt("id");
-            String nimi = rs.getString("nimi");
-
-            alueet.add(new Alue(id, nimi));
+        if (alueet.isEmpty()) {
+            return null;
+        } else {
+            return alueet;
         }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return alueet;
     }
 
     @Override
