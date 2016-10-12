@@ -17,8 +17,8 @@ public class AiheDao {
     }
     
     public List<Aihe> findAll(int alueId) throws SQLException {
-        //tämäkin count on väärin ja tähänkin timestamp
-        String komento = "SELECT Aihe.id, Aihe.Alue_id, Aihe.nimi, count(Aihe.id) as viesteja FROM Aihe WHERE Aihe.alue_id = ?";
+        // tähänkin timestamp
+        String komento = "SELECT Alue.id, Aihe.Alue_id, Aihe.nimi, count(Viesti.id) AS viesteja FROM Alue JOIN Aihe ON Alue.id = Aihe.Alue_id JOIN Viesti ON Aihe.id = Viesti.Aihe_id WHERE Aihe.alue_id = ? GROUP BY Aihe.id";
         List<Aihe> aiheet = database.queryAndCollect(komento, new AiheCollector(), alueId);
 
         if (aiheet.isEmpty()) {
