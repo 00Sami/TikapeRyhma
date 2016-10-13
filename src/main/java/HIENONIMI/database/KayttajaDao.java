@@ -26,7 +26,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
     }
 
     public Kayttaja findOne(String nimi) throws SQLException {
-        String komento = "SELECT * FROM Kayttaja WHERE name = ?";
+        String komento = "SELECT * FROM Kayttaja WHERE nimi = ?";
         List<Kayttaja> kayttajat = database.queryAndCollect(komento, new KayttajaCollector(), nimi);
 
         if (kayttajat.isEmpty()) {

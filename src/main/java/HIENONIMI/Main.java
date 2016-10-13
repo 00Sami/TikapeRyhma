@@ -9,7 +9,7 @@ import HIENONIMI.database.Database;
 import HIENONIMI.database.AlueDao;
 import HIENONIMI.database.KayttajaDao;
 import HIENONIMI.database.ViestiDao;
-
+import HIENONIMI.domain.Kayttaja;
 
 public class Main {
 
@@ -43,13 +43,19 @@ public class Main {
             return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
 
-        post("/:id/:aid", (req, res) -> { // Tämä lisää uuden käyttäjän, mutta uutta viestiä ei tule. Ongelmana onkai se, että kayttajaDao.teeUusi()-metodi sulkee tietokantayhteyden..
+        post("/:id/:aid", (req, res) -> { 
             String kayttaja = req.queryParams("kayttaja");
             String viesti = req.queryParams("viesti");
-
-            viestiDao.teeUusi(kayttajaDao.teeUusi(kayttaja).getId(), 2, viesti);  // tähän kakkosen paikalle aiheen id, saako sen jotenkin tosta polusta?
-
-            res.redirect("/");
+            if (!kayttaja.isEmpty() && !viesti.isEmpty()) {
+                int aiheId = Integer.parseInt(req.params("aid"));
+                Kayttaja nykyinen = kayttajaDao.findOne(kayttaja);
+                if (nykyinen == null) {
+                    nykyinen = kayttajaDao.teeUusi(kayttaja);
+                }
+                viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);  
+            }
+            String takas = "/" + req.params("id") + "/" + req.params("aid");
+            res.redirect(takas);
             return "";
         });
 

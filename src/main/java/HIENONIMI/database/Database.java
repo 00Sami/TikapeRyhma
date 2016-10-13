@@ -36,6 +36,7 @@ public class Database {
     
     
     public int update(String updateQuery, Object... params) throws SQLException {
+        
         PreparedStatement stmt = connection.prepareStatement(updateQuery);
 
         for (int i = 0; i < params.length; i++) {

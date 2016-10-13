@@ -26,6 +26,7 @@ public class ViestiDao {
 
     public void teeUusi(Integer kayttaja_id, Integer aihe_id, String viesti) throws SQLException {
         String komento = "INSERT INTO Viesti (Kayttaja_id, Aihe_id, viesti) VALUES (?, ?, ?)";
+        System.out.println("tehtiin: " + viesti);
         database.update(komento, kayttaja_id, aihe_id, viesti);
     }
 }
