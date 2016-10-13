@@ -9,6 +9,7 @@ import HIENONIMI.database.Database;
 import HIENONIMI.database.AlueDao;
 import HIENONIMI.database.KayttajaDao;
 import HIENONIMI.database.ViestiDao;
+import HIENONIMI.domain.Aihe;
 import HIENONIMI.domain.Kayttaja;
 
 public class Main {
@@ -43,7 +44,7 @@ public class Main {
             return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
 
-        post("/:id/:aid", (req, res) -> { 
+        post("/:id/:aid", (req, res) -> {
             String kayttaja = req.queryParams("kayttaja");
             String viesti = req.queryParams("viesti");
             if (!kayttaja.isEmpty() && !viesti.isEmpty()) {
@@ -52,19 +53,31 @@ public class Main {
                 if (nykyinen == null) {
                     nykyinen = kayttajaDao.teeUusi(kayttaja);
                 }
-                viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);  
+                viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
             }
             String takas = "/" + req.params("id") + "/" + req.params("aid");
             res.redirect(takas);
             return "";
         });
 
-        /*
-        Näitten jälkeen pitäisi tehä POSTit. 
-        /:id         uusi aiheen teko, mahdollisesti uusi kayttaja --> tästä yritystä tossa ylempänä
-        /:id/:aid    uusi viestin teko, mahdollisesti uusi kayttaja
-        
-        Sekä templateihin textboxit ja nappulat submittaamiseen
-         */
+        post("/:id", (req, res) -> {
+            String kayttaja = req.queryParams("kayttaja");
+            String aihe = req.queryParams("aihe");
+            String viesti = req.queryParams("viesti");
+            if (!kayttaja.isEmpty() && !viesti.isEmpty()) {
+                int alueId = Integer.parseInt(req.params("id"));
+                aiheDao.teeUusi(alueId, aihe);
+                int aiheId = aiheDao.etsiUusin(alueId).getId();
+                Kayttaja nykyinen = kayttajaDao.findOne(kayttaja);
+                if (nykyinen == null) {
+                    nykyinen = kayttajaDao.teeUusi(kayttaja);
+                }
+                viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
+            }
+            String takas = "/" + req.params("id");
+            res.redirect(takas);
+            return "";
+        });
+
     }
 }
