@@ -31,8 +31,9 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         get("/:id", (req, res) -> {
+            //favicon valitus lähtee jos pistää /:id/, mutta tämä rikkoo kaikki linkit ja en ehdit tätä nyt korjaamaan.
             HashMap map = new HashMap<>();
-            map.put("aiheet", aiheDao.findAll(Integer.parseInt(req.params("id"))));
+            map.put("aiheet", aiheDao.findAll(Integer.parseInt(req.params(":id"))));
 
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
