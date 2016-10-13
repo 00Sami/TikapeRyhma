@@ -11,6 +11,7 @@ import HIENONIMI.database.KayttajaDao;
 import HIENONIMI.database.ViestiDao;
 import HIENONIMI.domain.Aihe;
 import HIENONIMI.domain.Kayttaja;
+import java.sql.SQLException;
 
 public class Main {
 
@@ -49,11 +50,10 @@ public class Main {
             String viesti = req.queryParams("viesti");
             if (!kayttaja.isEmpty() && !viesti.isEmpty()) {
                 int aiheId = Integer.parseInt(req.params("aid"));
-                Kayttaja nykyinen = kayttajaDao.findOne(kayttaja);
-                if (nykyinen == null) {
-                    nykyinen = kayttajaDao.teeUusi(kayttaja);
-                }
+                Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
                 viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
+            } else {
+                //pitäiskö antaa erroria tai jotain
             }
             String takas = "/" + req.params("id") + "/" + req.params("aid");
             res.redirect(takas);
@@ -64,15 +64,14 @@ public class Main {
             String kayttaja = req.queryParams("kayttaja");
             String aihe = req.queryParams("aihe");
             String viesti = req.queryParams("viesti");
-            if (!kayttaja.isEmpty() && !viesti.isEmpty()) {
+            if (!kayttaja.isEmpty() && !viesti.isEmpty() && !aihe.isEmpty()) {
                 int alueId = Integer.parseInt(req.params("id"));
                 aiheDao.teeUusi(alueId, aihe);
                 int aiheId = aiheDao.etsiUusin(alueId).getId();
-                Kayttaja nykyinen = kayttajaDao.findOne(kayttaja);
-                if (nykyinen == null) {
-                    nykyinen = kayttajaDao.teeUusi(kayttaja);
-                }
+                Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
                 viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
+            } else {
+                //pitäiskö antaa erroria tai jotain
             }
             String takas = "/" + req.params("id");
             res.redirect(takas);
@@ -80,4 +79,13 @@ public class Main {
         });
 
     }
+
+    private static Kayttaja haeTaiTeeKayttaja(String kayttaja, KayttajaDao kayttajaDao) throws SQLException {
+        Kayttaja nykyinen = kayttajaDao.findOne(kayttaja);
+        if (nykyinen == null) {
+            nykyinen = kayttajaDao.teeUusi(kayttaja);
+        }
+        return nykyinen;
+    }
+
 }
