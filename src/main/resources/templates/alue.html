@@ -7,7 +7,7 @@
     </head>
 
     <body>
-        
+
         <table>
             <tr>
                 <th>Aihe</th>
@@ -18,6 +18,17 @@
                 <td th:text="${aihe.viesteja}">viestit</td>
             </tr>
         </table>
+
+        <span>Lisää uusi aihe</span>
+        <form method="POST">
+            <span>Käyttäjä:</span>
+            <input type="text" name="kayttaja"/>
+            <span>Aihe:</span>
+            <input type="text" name="aihe"/>
+            <span>Viesti:</span>
+            <input type="text" name="viesti"/>
+            <input type="submit" value="Lähetä!"/>
+        </form>
 
     </body>
 </html>
