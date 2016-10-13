@@ -9,6 +9,6 @@ public class AlueCollector implements Collector<Alue> {
     
     @Override
     public Alue collect(ResultSet rs) throws SQLException {
-        return new Alue(rs.getInt("id"), rs.getString("nimi"), rs.getInt("viesteja"));
+        return new Alue(rs.getInt("id"), rs.getString("nimi"), rs.getInt("viesteja"), rs.getString("aika"));
     }
 }

@@ -19,7 +19,7 @@ public class AiheDao {
 
     public List<Aihe> findAll(int alueId) throws SQLException {
         // tähänkin timestamp
-        String komento = "SELECT Aihe.id, Aihe.Alue_id, Aihe.nimi, count(Viesti.id) AS viesteja FROM Alue JOIN Aihe ON Alue.id = Aihe.Alue_id JOIN Viesti ON Aihe.id = Viesti.Aihe_id WHERE Aihe.alue_id = ? GROUP BY Aihe.id";
+        String komento = "SELECT Aihe.id, Aihe.Alue_id, Aihe.nimi, count(Viesti.id) AS viesteja, MAX(Viesti.aika) as aika FROM Alue JOIN Aihe ON Alue.id = Aihe.Alue_id JOIN Viesti ON Aihe.id = Viesti.Aihe_id WHERE Aihe.alue_id = ? GROUP BY Aihe.id";
         List<Aihe> aiheet = database.queryAndCollect(komento, new AiheCollector(), alueId);
 
         if (aiheet.isEmpty()) {
@@ -30,7 +30,7 @@ public class AiheDao {
     }
 
     public Aihe etsiUusin(int alueId) throws SQLException { // Olisi varmaan parempi päivämäärän mukaan?
-        String komento = "SELECT Aihe.id AS id, Aihe.Alue_id, Aihe.nimi, count(Viesti.id) AS viesteja FROM Alue LEFT JOIN Aihe ON Alue.id = Aihe.Alue_id LEFT JOIN Viesti ON Aihe.id = Viesti.Aihe_id WHERE Aihe.alue_id = ? GROUP BY Aihe.id ORDER BY Aihe.id DESC";
+        String komento = "SELECT Aihe.id AS id, Aihe.Alue_id, Aihe.nimi, count(Viesti.id) AS viesteja, MAX(Viesti.aika) AS aika FROM Alue LEFT JOIN Aihe ON Alue.id = Aihe.Alue_id LEFT JOIN Viesti ON Aihe.id = Viesti.Aihe_id WHERE Aihe.alue_id = ? GROUP BY Aihe.id ORDER BY Aihe.id DESC";
         List<Aihe> aiheet = database.queryAndCollect(komento, new AiheCollector(), alueId);
 
         if (aiheet.isEmpty()) {

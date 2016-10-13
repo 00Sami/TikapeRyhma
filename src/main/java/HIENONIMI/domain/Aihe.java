@@ -1,5 +1,4 @@
 package HIENONIMI.domain;
-import java.sql.Timestamp;
 
 public class Aihe {
 
@@ -7,13 +6,14 @@ public class Aihe {
     private Integer alue_id;
     private String nimi;
     private int viesteja;
-    //private Timestamp viimeisin;
+    private String viimeisin;
 
-    public Aihe(Integer id, Integer alue_id, String nimi, int viesteja) {
+    public Aihe(Integer id, Integer alue_id, String nimi, int viesteja, String aika) {
         this.id = id;
         this.alue_id = alue_id;
         this.nimi = nimi;
         this.viesteja = viesteja;
+        this.viimeisin = aika;
     }
 
     public Integer getAlue_id() {
@@ -54,6 +54,14 @@ public class Aihe {
 
     public void setNimi(String nimi) {
         this.nimi = nimi;
+    }
+
+    public String getViimeisin() {
+        return viimeisin;
+    }
+
+    public void setViimeisin(String viimeisin) {
+        this.viimeisin = viimeisin;
     }
 
 }

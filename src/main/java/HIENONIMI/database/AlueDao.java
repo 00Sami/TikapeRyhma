@@ -27,9 +27,8 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     @Override
     public List<Alue> findAll() throws SQLException {
-        //tämä viesti counter on väärin. 
         //pitäisi lisätä viimeisimmän viestin timestamp
-        String komento = "SELECT Alue.id, Alue.nimi, count(Viesti.id) AS viesteja FROM Alue LEFT JOIN Aihe ON Alue.id = Aihe.Alue_id LEFT JOIN Viesti ON Aihe.id = Viesti.Aihe_id GROUP BY Alue.id";
+        String komento = "SELECT Alue.id, Alue.nimi, count(Viesti.id) AS viesteja, MAX(viesti.aika) as aika FROM Alue LEFT JOIN Aihe ON Alue.id = Aihe.Alue_id LEFT JOIN Viesti ON Aihe.id = Viesti.Aihe_id GROUP BY Alue.id";
         List<Alue> alueet = database.queryAndCollect(komento, new AlueCollector());
 
         if (alueet.isEmpty()) {

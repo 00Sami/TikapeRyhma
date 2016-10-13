@@ -12,10 +12,12 @@
             <tr>
                 <th>Aihe</th>
                 <th>Viesteja</th>
+                <th>Viimeisin</th>
             </tr>
             <tr th:each="aihe : ${aiheet}">
                 <td>  <a th:href="@{~/{id}/{aid}(id=${aihe.alue_id}, aid=${aihe.id})}" th:text="${aihe.nimi}">nimi</a></td>
                 <td th:text="${aihe.viesteja}">viestit</td>
+                <td th:text="${aihe.viimeisin}">viimeisin</td>
             </tr>
         </table>
 
