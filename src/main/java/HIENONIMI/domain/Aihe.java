@@ -8,6 +8,14 @@ public class Aihe {
     private int viesteja;
     private String viimeisin;
 
+    public Aihe(Integer id, Integer alue_id, String nimi) {
+        this.id = id;
+        this.alue_id = alue_id;
+        this.nimi = nimi;
+        this.viesteja = 0;
+        this.viimeisin = "";
+    }
+    
     public Aihe(Integer id, Integer alue_id, String nimi, int viesteja, String aika) {
         this.id = id;
         this.alue_id = alue_id;

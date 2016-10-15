@@ -1,14 +1,20 @@
 package HIENONIMI.domain;
 
-import java.sql.Timestamp;
-
 public class Alue {
 
     private Integer id;
     private String nimi;
     private int viesteja;
     private String viimeisin;
-
+    
+    
+    public Alue(Integer id, String nimi) {
+        this.id = id;
+        this.nimi = nimi;
+        this.viesteja = 0;
+        this.viimeisin = "";
+    }    
+    
     public Alue(Integer id, String nimi, int viesteja, String aika) {
         this.id = id;
         this.nimi = nimi;

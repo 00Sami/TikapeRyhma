@@ -33,14 +33,15 @@ public class Main {
 
         get("/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("aiheet", aiheDao.findAll(Integer.parseInt(req.params("id"))));
+            map.put("aiheet", aiheDao.findAll(Integer.parseInt(req.params(":id"))));
 
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
         get("/:id/:aid", (req, res) -> {
+            //tähän sivutus
             HashMap map = new HashMap<>();
-            map.put("viestit", viestiDao.findAll(Integer.parseInt(req.params("aid"))));
+            map.put("viestit", viestiDao.findAll(Integer.parseInt(req.params(":aid"))));
 
             return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
@@ -48,6 +49,7 @@ public class Main {
         post("/:id/:aid", (req, res) -> {
             String kayttaja = req.queryParams("kayttaja");
             String viesti = req.queryParams("viesti");
+            //pitäis lisätä stringien pituustestit
             if (!kayttaja.isEmpty() && !viesti.isEmpty()) {
                 int aiheId = Integer.parseInt(req.params("aid"));
                 Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
@@ -64,6 +66,7 @@ public class Main {
             String kayttaja = req.queryParams("kayttaja");
             String aihe = req.queryParams("aihe");
             String viesti = req.queryParams("viesti");
+            //pitäis lisätä stringien pituustestit
             if (!kayttaja.isEmpty() && !viesti.isEmpty() && !aihe.isEmpty()) {
                 int alueId = Integer.parseInt(req.params("id"));
                 aiheDao.teeUusi(alueId, aihe);

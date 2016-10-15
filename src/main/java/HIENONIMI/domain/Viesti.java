@@ -10,6 +10,15 @@ public class Viesti {
     private String aika;
     private String kayttajanimi;
 
+    public Viesti(Integer id, Integer aihe_id, Integer kayttaja_id, String viesti, String aika) {
+        this.id = id;
+        this.aihe_id = aihe_id;
+        this.kayttaja_id = kayttaja_id;
+        this.viesti = viesti;
+        this.aika = aika;
+        this.kayttajanimi = "";
+    }
+    
     public Viesti(Integer id, Integer aihe_id, Integer kayttaja_id, String viesti, String aika, String kayttajanimi) {
         this.id = id;
         this.aihe_id = aihe_id;

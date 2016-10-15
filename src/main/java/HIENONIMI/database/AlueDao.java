@@ -1,6 +1,5 @@
 package HIENONIMI.database;
 
-import HIENONIMI.database.collector.AlueCollector;
 import java.sql.SQLException;
 import java.util.List;
 import HIENONIMI.domain.Alue;
@@ -16,7 +15,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     @Override
     public Alue findOne(Integer key) throws SQLException {
         String komento = "SELECT * FROM Alue WHERE id = ?";
-        List<Alue> alueet = database.queryAndCollect(komento, new AlueCollector(), key);
+        List<Alue> alueet = database.queryAndCollect(komento, rs -> new Alue(rs.getInt("id"), rs.getString("nimi")), key);
 
         if (alueet.isEmpty()) {
             return null;
@@ -27,9 +26,8 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     @Override
     public List<Alue> findAll() throws SQLException {
-        //pitäisi lisätä viimeisimmän viestin timestamp
         String komento = "SELECT Alue.id, Alue.nimi, count(Viesti.id) AS viesteja, MAX(viesti.aika) as aika FROM Alue LEFT JOIN Aihe ON Alue.id = Aihe.Alue_id LEFT JOIN Viesti ON Aihe.id = Viesti.Aihe_id GROUP BY Alue.id";
-        List<Alue> alueet = database.queryAndCollect(komento, new AlueCollector());
+        List<Alue> alueet = database.queryAndCollect(komento, rs -> new Alue(rs.getInt("id"), rs.getString("nimi"), rs.getInt("viesteja"), rs.getString("aika")));
 
         if (alueet.isEmpty()) {
             return null;

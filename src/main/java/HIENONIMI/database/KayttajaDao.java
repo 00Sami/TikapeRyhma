@@ -1,6 +1,5 @@
 package HIENONIMI.database;
 
-import HIENONIMI.database.collector.KayttajaCollector;
 import HIENONIMI.domain.Kayttaja;
 import java.sql.SQLException;
 import java.util.List;
@@ -16,7 +15,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
     @Override
     public Kayttaja findOne(Integer key) throws SQLException {
         String komento = "SELECT * FROM Kayttaja WHERE id = ?";
-        List<Kayttaja> kayttajat = database.queryAndCollect(komento, new KayttajaCollector(), key);
+        List<Kayttaja> kayttajat = database.queryAndCollect(komento, rs -> new Kayttaja(rs.getInt("id"), rs.getString("nimi")), key);
 
         if (kayttajat.isEmpty()) {
             return null;
@@ -27,7 +26,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
 
     public Kayttaja findOne(String nimi) throws SQLException {
         String komento = "SELECT * FROM Kayttaja WHERE nimi = ?";
-        List<Kayttaja> kayttajat = database.queryAndCollect(komento, new KayttajaCollector(), nimi);
+        List<Kayttaja> kayttajat = database.queryAndCollect(komento, rs -> new Kayttaja(rs.getInt("id"), rs.getString("nimi")), nimi);
 
         if (kayttajat.isEmpty()) {
             return null;
@@ -45,7 +44,7 @@ public class KayttajaDao implements Dao<Kayttaja, Integer> {
     @Override
     public List<Kayttaja> findAll() throws SQLException {
         String komento = "SELECT * FROM Kayttaja";
-        List<Kayttaja> kayttajat = database.queryAndCollect(komento, new KayttajaCollector());
+        List<Kayttaja> kayttajat = database.queryAndCollect(komento, rs -> new Kayttaja(rs.getInt("id"), rs.getString("nimi")));
 
         if (kayttajat.isEmpty()) {
             return null;
