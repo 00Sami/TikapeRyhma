@@ -1,0 +1,37 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>HIENONIMI FORUM</title>
+        <meta charset="utf-8" />
+        <style>
+            #otsikko {margin:20px 5px 20px 22%;}
+            #e { margin: 2cm; }
+            table, th, td {border:1px solid black; padding: 15px; border-collapse: collapse;}
+            h1 { font-size: 3em; }
+            #footer {margin: 1cm; }
+        </style>
+    </head>
+
+    <body style="background-color: rgb(214, 226, 255)">
+        <h1 id="otsikko"><u>Tervetuloa!</u></h1>
+
+        <table id="e" style="width:50%">
+            <tr>
+                <th>Alue</th>
+                <th>Viesteja</th>
+                <th>Viimeisin</th>
+            </tr>
+            <tr th:each="alue : ${alueet}">
+                <td>  <a th:href="@{~/{id}(id=${alue.id})}" th:text="${alue.nimi}">nimi</a></td>
+                <td th:text="${alue.viesteja}">viestit</td>
+                <td th:text="${alue.viimeisin}">viimeisin</td>
+            </tr>
+        </table>
+
+        <footer id="footer">
+            <p>Created by: Lauri, Ville, Olli, Sami</p>
+        </footer>
+    </body>
+
+</html>

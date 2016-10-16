@@ -1,0 +1,49 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>HIENONIMI FORUM</title>
+        <meta charset="utf-8" />
+        <style>
+            #otsikko {margin:20px 5px 20px 22%;}
+            body { text-align: left }
+            #e { margin: 2cm; }
+            .lisays {margin:0cm 0cm 0cm 3cm;}
+            table, th, td {border:1px solid black; padding: 15px; border-collapse: collapse;}
+            #footer {margin: 1cm; }
+        </style>
+
+    </head>
+
+    <body style="background-color: rgb(214, 226, 255)">
+        <h1 id="otsikko">Aiheet</h1>
+        <table id="e" style="width:50%">
+            <tr>
+                <th>Aihe</th>
+                <th>Viesteja</th>
+                <th>Viimeisin</th>
+            </tr>
+            <tr th:each="aihe : ${aiheet}">
+                <td>  <a th:href="@{~/{id}/{aid}(id=${aihe.alue_id}, aid=${aihe.id})}" th:text="${aihe.nimi}">nimi</a></td>
+                <td th:text="${aihe.viesteja}">viestit</td>
+                <td th:text="${aihe.viimeisin}">viimeisin</td>
+            </tr>
+        </table>
+
+        <span class="lisays">Lisää uusi aihe</span>
+        <form method="POST">
+            <span  class="lisays">Käyttäjä:</span>
+            <input type="text" name="kayttaja"/>
+            <span>Aihe:</span>
+            <input type="text" name="aihe"/>
+            <span>Viesti:</span>
+            <input type="text" name="viesti"/>
+            <input type="submit" value="Lähetä!"/>
+        </form>
+
+        <footer id="footer">
+            <p>Created by: Lauri, Ville, Olli, Sami</p>
+        </footer>
+
+    </body>
+</html>
