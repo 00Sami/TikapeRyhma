@@ -26,7 +26,7 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     @Override
     public List<Alue> findAll() throws SQLException {
-        String komento = "SELECT Alue.id, Alue.nimi, count(Viesti.id) AS viesteja, MAX(viesti.aika) as aika FROM Alue LEFT JOIN Aihe ON Alue.id = Aihe.Alue_id LEFT JOIN Viesti ON Aihe.id = Viesti.Aihe_id GROUP BY Alue.id";
+        String komento = "SELECT Alue.id, Alue.nimi, count(Viesti.id) AS viesteja, MAX(viesti.aika) as aika FROM Alue LEFT JOIN Aihe ON Alue.id = Aihe.Alue_id LEFT JOIN Viesti ON Aihe.id = Viesti.Aihe_id GROUP BY Alue.id ORDER BY Alue.nimi ASC";
         List<Alue> alueet = database.queryAndCollect(komento, rs -> new Alue(rs.getInt("id"), rs.getString("nimi"), rs.getInt("viesteja"), rs.getString("aika")));
 
         if (alueet.isEmpty()) {
