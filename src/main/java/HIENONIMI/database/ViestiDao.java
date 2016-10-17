@@ -2,6 +2,7 @@ package HIENONIMI.database;
 
 import HIENONIMI.domain.Viesti;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViestiDao {
@@ -21,6 +22,32 @@ public class ViestiDao {
         } else {
             return viestit;
         }
+    }
+
+    public List<Viesti> naytaKymmenen(int aiheId) throws SQLException {
+        return naytaKymmenen(aiheId, 1);
+    }
+
+    public List<Viesti> naytaKymmenen(int aiheId, int sivu) throws SQLException {
+
+        String komento = "SELECT Viesti.id as id, Viesti.aihe_id as aihe_id, Viesti.kayttaja_id as kayttaja_id, viesti.viesti, viesti.aika, Kayttaja.nimi as kayttaja FROM Viesti INNER JOIN Kayttaja ON Viesti.kayttaja_id = Kayttaja.id WHERE aihe_id = ? LIMIT ?*10-10, ?*10";
+        List<Viesti> viestit = database.queryAndCollect(komento, rs -> new Viesti(rs.getInt("id"), rs.getInt("aihe_id"), rs.getInt("kayttaja_id"), rs.getString("viesti"), rs.getString("aika"), rs.getString("kayttaja")), aiheId, sivu, sivu);
+
+        if (viestit.isEmpty()) {
+            return null;
+        } else {
+            return viestit;
+        }
+    }
+
+    public List<Integer> sivunumerot(int aiheId) throws SQLException {
+        String komento = "SELECT COUNT(Viesti.id) AS maara FROM Viesti INNER JOIN Kayttaja ON Viesti.kayttaja_id = Kayttaja.id WHERE aihe_id = ?";
+        int viestimaara = database.queryAndCollect(komento, rs -> rs.getInt("maara"), aiheId).get(0);
+        List<Integer> sivut = new ArrayList<>();
+        for (int i = 0; i <= (viestimaara / 10); i++) {
+            sivut.add(i + 1);
+        }
+        return sivut;
     }
 
     public void teeUusi(Integer kayttaja_id, Integer aihe_id, String viesti) throws SQLException {
