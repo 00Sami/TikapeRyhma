@@ -39,10 +39,13 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         get("/:id/:aid", (req, res) -> {
-            //tähän sivutus
             HashMap map = new HashMap<>();
-            map.put("viestit", viestiDao.findAll(Integer.parseInt(req.params(":aid"))));
-
+            try {
+                map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params("aid")), Integer.parseInt(req.queryParams("sivu"))));
+            } catch (Exception e) {
+                map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params("aid"))));
+            }
+            map.put("sivut", viestiDao.sivunumerot(Integer.parseInt(req.params("aid"))));
             return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
 
