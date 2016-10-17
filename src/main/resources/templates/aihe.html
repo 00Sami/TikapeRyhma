@@ -19,6 +19,14 @@
             </tr>
         </table>
 
+        <table>
+            tässä lueteltuna viestiketjun sivut (pitäisi saada linkeiksi):
+            <tr th:each="sivu : ${sivut}">
+                <td th:text="${sivu}">sivu</td>
+            </tr>
+        </table>
+
+
         <form method="POST">
             <span>Käyttäjä:</span>
             <input type="text" name="kayttaja"/>
