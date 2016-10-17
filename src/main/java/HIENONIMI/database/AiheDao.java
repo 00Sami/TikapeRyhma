@@ -28,10 +28,15 @@ public class AiheDao {
         }
     }
 
+    public Aihe findOne(int id) throws SQLException {
+        String komento = "SELECT Aihe.id, Aihe.Alue_id FROM Aihe WHERE Aihe.id = ";
+        return (Aihe) database.queryAndCollect(komento, rs -> new Aihe(rs.getInt("id"), rs.getInt("Alue_id"), null), id).get(0);
+    }
+
     public Aihe etsiUusin(int alueId) throws SQLException { // Olisi varmaan parempi päivämäärän mukaan?
         String komento = "SELECT Aihe.id AS id, Aihe.Alue_id, Aihe.nimi, count(Viesti.id) AS viesteja, MAX(Viesti.aika) AS aika FROM Alue LEFT JOIN Aihe ON Alue.id = Aihe.Alue_id LEFT JOIN Viesti ON Aihe.id = Viesti.Aihe_id WHERE Aihe.alue_id = ? GROUP BY Aihe.id ORDER BY Aihe.id DESC";
         List<Aihe> aiheet = database.queryAndCollect(komento, rs -> new Aihe(rs.getInt("id"), rs.getInt("Alue_id"), rs.getString("nimi")), alueId);
-        
+
         if (aiheet.isEmpty()) {
             return null;
         } else {
