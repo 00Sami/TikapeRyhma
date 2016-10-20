@@ -40,12 +40,14 @@ public class Main {
 
         get("/:id/:aid", (req, res) -> {
             HashMap map = new HashMap<>();
+            map.put("alue", req.params(":id"));            
+            map.put("aihe", req.params(":aid"));
             try {
-                map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params("aid")), Integer.parseInt(req.queryParams("sivu"))));
+                map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params(":aid")), Integer.parseInt(req.queryParams("sivu"))));
             } catch (Exception e) {
-                map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params("aid"))));
+                map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params(":aid"))));
             }
-            map.put("sivut", viestiDao.sivunumerot(Integer.parseInt(req.params("aid"))));
+            map.put("sivut", viestiDao.sivunumerot(Integer.parseInt(req.params(":aid"))));
             return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
 
@@ -54,13 +56,14 @@ public class Main {
             String viesti = req.queryParams("viesti");
             //pitäis lisätä stringien pituustestit
             if (!kayttaja.isEmpty() && !viesti.isEmpty()) {
-                int aiheId = Integer.parseInt(req.params("aid"));
+                int aiheId = Integer.parseInt(req.params(":aid"));
                 Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
                 viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
             } else {
                 //pitäiskö antaa erroria tai jotain
             }
-            String takas = "/" + req.params("id") + "/" + req.params("aid");
+            //pitäis varmaan ohjata viimeiselle sivulle
+            String takas = "/" + req.params(":id") + "/" + req.params(":aid");
             res.redirect(takas);
             return "";
         });
@@ -71,7 +74,7 @@ public class Main {
             String viesti = req.queryParams("viesti");
             //pitäis lisätä stringien pituustestit
             if (!kayttaja.isEmpty() && !viesti.isEmpty() && !aihe.isEmpty()) {
-                int alueId = Integer.parseInt(req.params("id"));
+                int alueId = Integer.parseInt(req.params(":id"));
                 aiheDao.teeUusi(alueId, aihe);
                 int aiheId = aiheDao.etsiUusin(alueId).getId();
                 Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
@@ -79,7 +82,7 @@ public class Main {
             } else {
                 //pitäiskö antaa erroria tai jotain
             }
-            String takas = "/" + req.params("id");
+            String takas = "/" + req.params(":id");
             res.redirect(takas);
             return "";
         });
