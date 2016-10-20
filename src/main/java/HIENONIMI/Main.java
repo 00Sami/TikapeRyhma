@@ -12,6 +12,7 @@ import HIENONIMI.database.ViestiDao;
 import HIENONIMI.domain.Aihe;
 import HIENONIMI.domain.Kayttaja;
 import java.sql.SQLException;
+import java.util.List;
 
 public class Main {
 
@@ -33,21 +34,31 @@ public class Main {
 
         get("/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("aiheet", aiheDao.findAll(Integer.parseInt(req.params(":id"))));
+            try {
+                map.put("aiheet", aiheDao.findAll(Integer.parseInt(req.params(":id"))));
+            } catch (NumberFormatException e) {
+                //miksi tässä koitetaan parsia faviconia??
+            }
 
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
         get("/:id/:aid", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("alue", req.params(":id"));            
+            map.put("alue", req.params(":id"));
             map.put("aihe", req.params(":aid"));
             try {
                 map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params(":aid")), Integer.parseInt(req.queryParams("sivu"))));
             } catch (Exception e) {
                 map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params(":aid"))));
             }
-            map.put("sivut", viestiDao.sivunumerot(Integer.parseInt(req.params(":aid"))));
+            List<Integer> sivut = viestiDao.sivunumerot(Integer.parseInt(req.params(":aid")));
+            if (sivut.size() > 1) {
+                map.put("sivut", sivut);
+            } else {
+                //
+                map.put("sivut", "");
+            }
             return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
 

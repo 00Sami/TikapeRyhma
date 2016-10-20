@@ -17,8 +17,7 @@ public class AiheDao {
     }
 
     public List<Aihe> findAll(int alueId) throws SQLException {
-        // tähänkin timestamp
-        String komento = "SELECT Aihe.id, Aihe.Alue_id, Aihe.nimi, count(Viesti.id) AS viesteja, MAX(Viesti.aika) as aika FROM Alue JOIN Aihe ON Alue.id = Aihe.Alue_id JOIN Viesti ON Aihe.id = Viesti.Aihe_id WHERE Aihe.alue_id = ? GROUP BY Aihe.id";
+        String komento = "SELECT Aihe.id, Aihe.Alue_id, Aihe.nimi, count(Viesti.id) AS viesteja, MAX(Viesti.aika) as aika FROM Alue JOIN Aihe ON Alue.id = Aihe.Alue_id JOIN Viesti ON Aihe.id = Viesti.Aihe_id WHERE Aihe.alue_id = ? GROUP BY Aihe.id ORDER BY aika DESC LIMIT 10";
         List<Aihe> aiheet = database.queryAndCollect(komento, rs -> new Aihe(rs.getInt("id"), rs.getInt("Alue_id"), rs.getString("nimi"), rs.getInt("viesteja"), rs.getString("aika")), alueId);
 
         if (aiheet.isEmpty()) {
