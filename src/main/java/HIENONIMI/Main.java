@@ -73,15 +73,17 @@ public class Main {
         post("/:id/:aid", (req, res) -> {
             String kayttaja = req.queryParams("kayttaja");
             String viesti = req.queryParams("viesti");
-            //pitäis lisätä stringien pituustestit
-            if (!kayttaja.isEmpty() && !viesti.isEmpty()) {
-                int aiheId = Integer.parseInt(req.params(":aid"));
-                Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
-                viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
-            } else {
-                //pitäiskö antaa erroria tai jotain
+            if (kayttaja.isEmpty() || viesti.isEmpty()) {
+                return "Virhe! Tyhjä viesti tai kayttaja.";
             }
-            //pitäis varmaan ohjata viimeiselle sivulle
+            if (viesti.length() > 1999 || kayttaja.length() > 24) {
+                return "Virhe! Liian pitkä viesti tai käyttäjä";
+            }
+
+            int aiheId = Integer.parseInt(req.params(":aid"));
+            Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
+            viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
+
             String takas = "/" + req.params(":id") + "/" + req.params(":aid");
             res.redirect(takas);
             return "";
@@ -91,16 +93,19 @@ public class Main {
             String kayttaja = req.queryParams("kayttaja");
             String aihe = req.queryParams("aihe");
             String viesti = req.queryParams("viesti");
-            //pitäis lisätä stringien pituustestit
-            if (!kayttaja.isEmpty() && !viesti.isEmpty() && !aihe.isEmpty()) {
-                int alueId = Integer.parseInt(req.params(":id"));
-                aiheDao.teeUusi(alueId, aihe);
-                int aiheId = aiheDao.etsiUusin(alueId).getId();
-                Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
-                viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
-            } else {
-                //pitäiskö antaa erroria tai jotain
+            if (kayttaja.isEmpty() || viesti.isEmpty() || aihe.isEmpty()) {
+                return "Virhe! Tyhjä viesti, kayttaja tai aihe.";
             }
+            if (viesti.length() > 1999 || kayttaja.length() > 24 || aihe.length() > 49) {
+                return "Virhe! Liian pitkä viesti, käyttäjä tai aihe";
+            }
+
+            int alueId = Integer.parseInt(req.params(":id"));
+            aiheDao.teeUusi(alueId, aihe);
+            int aiheId = aiheDao.etsiUusin(alueId).getId();
+            Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
+            viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
+
             String takas = "/" + req.params(":id");
             res.redirect(takas);
             return "";
