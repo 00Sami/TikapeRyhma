@@ -16,7 +16,8 @@
     </head>
 
     <body style="background-color: rgb(214, 226, 255)">
-        <h1 id="otsikko">Viestit</h1>
+        <h1 id="otsikko" th:text="${aihe.nimi}">Viestit</h1>
+        <a th:href="@{~/{id}(id=${alue})}">Takaisin alueelle</a>
         <table id="e" style="width:50%">
             <tr>
                 <th>Käyttäjä</th>

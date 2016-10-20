@@ -16,7 +16,8 @@
     </head>
 
     <body style="background-color: rgb(214, 226, 255)">
-        <h1 id="otsikko">Aiheet</h1>
+        <h1 id="otsikko" th:text="${alue.nimi}">Aiheet</h1>
+        <a href="/">Takaisin etusivulle</a>
         <table id="e" style="width:50%">
             <tr>
                 <th>Aihe</th>

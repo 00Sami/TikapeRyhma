@@ -49,7 +49,7 @@ public class Main {
             } catch (NumberFormatException e) {
                 //miksi tässä koitetaan parsia faviconia??
             }
-
+            map.put("alue", alueDao.findOne(Integer.parseInt(req.params(":id"))));
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
@@ -64,6 +64,7 @@ public class Main {
             }
             List<Integer> sivut = viestiDao.sivunumerot(Integer.parseInt(req.params(":aid")));
             //jos sivujen määrä = 1, niin ei lisätä sivuja joten yksisivuisessa threadissä ei näy sivunumeroa
+            map.put("aihe", aiheDao.findOne(Integer.parseInt(req.params(":aid"))));
             if (sivut.size() > 1) {
                 map.put("sivut", sivut);
             }
@@ -76,6 +77,7 @@ public class Main {
             if (kayttaja.isEmpty() || viesti.isEmpty()) {
                 return "Virhe! Tyhjä viesti tai kayttaja.";
             }
+
             if (viesti.length() > 1999 || kayttaja.length() > 24) {
                 return "Virhe! Liian pitkä viesti tai käyttäjä";
             }
@@ -83,8 +85,7 @@ public class Main {
             int aiheId = Integer.parseInt(req.params(":aid"));
             Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
             viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
-
-            String takas = "/" + req.params(":id") + "/" + req.params(":aid");
+            String takas = "/" + req.params(":id") + "/" + req.params(":aid") + "?sivu=" + viestiDao.sivunumerot(Integer.parseInt(req.params(":aid"))).size();
             res.redirect(takas);
             return "";
         });
