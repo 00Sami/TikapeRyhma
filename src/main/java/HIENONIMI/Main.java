@@ -53,12 +53,10 @@ public class Main {
                 map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params(":aid"))));
             }
             List<Integer> sivut = viestiDao.sivunumerot(Integer.parseInt(req.params(":aid")));
+            //jos sivujen määrä = 1, niin ei lisätä sivuja joten yksisivuisessa threadissä ei näy sivunumeroa
             if (sivut.size() > 1) {
                 map.put("sivut", sivut);
-            } else {
-                //aika säätö, mutta tämä ei näytä sivunumeroja, jos sivuja on vain yksi..
-                map.put("sivut", "");
-            }
+            } 
             return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
 
