@@ -65,11 +65,12 @@ public class Main {
                 map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params(":aid"))));
             }
             List<Integer> sivut = viestiDao.sivunumerot(Integer.parseInt(req.params(":aid")));
-            //jos sivujen määrä = 1, niin ei lisätä sivuja joten yksisivuisessa threadissä ei näy sivunumeroa
+            
             try {                
-                map.put("aihe", aiheDao.findOne(Integer.parseInt(req.params(":aid"))));
+                map.put("alue", alueDao.findOne(Integer.parseInt(req.params(":id"))));
             } catch (NumberFormatException e) {}
             
+            //jos sivujen määrä = 1, niin ei lisätä sivuja joten yksisivuisessa threadissä ei näy sivunumeroa
             if (sivut.size() > 1) {
                 map.put("sivut", sivut);
             }
