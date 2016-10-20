@@ -81,8 +81,7 @@ public class Main {
             } else {
                 //pitäiskö antaa erroria tai jotain
             }
-            //pitäis varmaan ohjata viimeiselle sivulle
-            String takas = "/" + req.params(":id") + "/" + req.params(":aid");
+            String takas = "/" + req.params(":id") + "/" + req.params(":aid") + "?sivu=" + viestiDao.sivunumerot(Integer.parseInt(req.params(":aid"))).size();
             res.redirect(takas);
             return "";
         });
