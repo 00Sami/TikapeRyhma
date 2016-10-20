@@ -56,7 +56,7 @@ public class Main {
             if (sivut.size() > 1) {
                 map.put("sivut", sivut);
             } else {
-                //
+                //aika säätö, mutta tämä ei näytä sivunumeroja, jos sivuja on vain yksi..
                 map.put("sivut", "");
             }
             return new ModelAndView(map, "aihe");
