@@ -20,7 +20,7 @@
         <table id="e" style="width:50%">
             <tr>
                 <th>Aihe</th>
-                <th>Viesteja</th>
+                <th>Viestejä</th>
                 <th>Viimeisin</th>
             </tr>
             <tr th:each="aihe : ${aiheet}">
@@ -42,7 +42,7 @@
             <br/>
             <span>Viesti:</span>
             <br/>
-            <textarea name="viesti"></textarea>
+            <textarea rows="10" cols="50" name="viesti"></textarea>
             <input type="submit" value="Lähetä!"/>
         </form>
 
