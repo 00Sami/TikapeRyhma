@@ -43,9 +43,11 @@ public class ViestiDao {
     public List<Integer> sivunumerot(int aiheId) throws SQLException {
         String komento = "SELECT COUNT(Viesti.id) AS maara FROM Viesti INNER JOIN Kayttaja ON Viesti.kayttaja_id = Kayttaja.id WHERE aihe_id = ?";
         int viestimaara = database.queryAndCollect(komento, rs -> rs.getInt("maara"), aiheId).get(0);
+        System.out.println("viestimäärä: " + viestimaara);
         List<Integer> sivut = new ArrayList<>();
-        for (int i = 0; i <= (viestimaara / 10); i++) {
-            sivut.add(i + 1);
+        int sivumaara = (int) Math.ceil(viestimaara * 1.0 / 10);
+        for (int i = 1; i <= sivumaara; i++) {
+            sivut.add(i);
         }
         return sivut;
     }
