@@ -30,7 +30,7 @@ public class ViestiDao {
 
     public List<Viesti> naytaKymmenen(int aiheId, int sivu) throws SQLException {
 
-        String komento = "SELECT Viesti.id as id, Viesti.aihe_id as aihe_id, Viesti.kayttaja_id as kayttaja_id, viesti.viesti, viesti.aika, Kayttaja.nimi as kayttaja FROM Viesti INNER JOIN Kayttaja ON Viesti.kayttaja_id = Kayttaja.id WHERE aihe_id = ? LIMIT " + sivu + "*10-10, 10";
+        String komento = "SELECT Viesti.id as id, Viesti.aihe_id as aihe_id, Viesti.kayttaja_id as kayttaja_id, viesti.viesti, viesti.aika, Kayttaja.nimi as kayttaja FROM Viesti INNER JOIN Kayttaja ON Viesti.kayttaja_id = Kayttaja.id WHERE aihe_id = ? ORDER BY Viesti.id LIMIT 10 OFFSET " + sivu + "*10-10";
         List<Viesti> viestit = database.queryAndCollect(komento, rs -> new Viesti(rs.getInt("id"), rs.getInt("aihe_id"), rs.getInt("kayttaja_id"), rs.getString("viesti"), rs.getString("aika"), rs.getString("kayttaja")), aiheId);
 
         if (viestit.isEmpty()) {
