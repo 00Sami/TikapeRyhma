@@ -13,7 +13,7 @@ public class Database {
     public Database(String databaseAddress) throws Exception {
         this.databaseAddress = databaseAddress;
         this.init();
-        this.connection = DriverManager.getConnection(databaseAddress);
+        this.connection = this.getConnection();
     }
 
     public <T> List<T> queryAndCollect(String query, Collector<T> col, Object... params) throws SQLException {
@@ -101,7 +101,7 @@ public class Database {
         lista.add("CREATE TABLE Kayttaja (id SERIAL PRIMARY KEY, nimi varchar(25) NOT NULL);");
         lista.add("INSERT INTO Alue (nimi) VALUES ('Ohjelmointikeskustelu')");
         lista.add("INSERT INTO Alue (nimi) VALUES ('Yleinen keskustelu')");
-        lista.add("INSERT INTO Alue (nimi) VALUES ('Teustausforum')");
+        lista.add("INSERT INTO Alue (nimi) VALUES ('Testausforum')");
         return lista;
     }
 
@@ -116,7 +116,6 @@ public class Database {
         lista.add("INSERT INTO Alue (nimi) VALUES ('Ohjelmointikeskustelu')");
         lista.add("INSERT INTO Alue (nimi) VALUES ('Yleinen keskustelu')");
         //pitäiskö käyttäjänimi olla unique?
-        //tähän varmaan pitäisi lisätä alueita myös niin jos tehdään uusi DB, on paikkoja mihin postata..
         return lista;
     }
 }
