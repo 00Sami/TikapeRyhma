@@ -44,12 +44,14 @@ public class Main {
 
         get("/:id", (req, res) -> {
             HashMap map = new HashMap<>();
+            int id = -1;
             try {
-                map.put("aiheet", aiheDao.findAll(Integer.parseInt(req.params(":id"))));
+                id = Integer.parseInt(req.params(":id"));
             } catch (NumberFormatException e) {
                 //miksi tässä koitetaan parsia faviconia??
             }
-            map.put("alue", alueDao.findOne(Integer.parseInt(req.params(":id"))));
+            map.put("aiheet", aiheDao.findAll(id));
+            map.put("alue", alueDao.findOne(id));
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
@@ -64,7 +66,10 @@ public class Main {
             }
             List<Integer> sivut = viestiDao.sivunumerot(Integer.parseInt(req.params(":aid")));
             //jos sivujen määrä = 1, niin ei lisätä sivuja joten yksisivuisessa threadissä ei näy sivunumeroa
-            map.put("aihe", aiheDao.findOne(Integer.parseInt(req.params(":aid"))));
+            try {                
+                map.put("aihe", aiheDao.findOne(Integer.parseInt(req.params(":aid"))));
+            } catch (NumberFormatException e) {}
+            
             if (sivut.size() > 1) {
                 map.put("sivut", sivut);
             }
@@ -81,8 +86,11 @@ public class Main {
             if (viesti.length() > 1999 || kayttaja.length() > 24) {
                 return "Virhe! Liian pitkä viesti tai käyttäjä";
             }
-
-            int aiheId = Integer.parseInt(req.params(":aid"));
+            int aiheId = -1;
+            try {
+                aiheId = Integer.parseInt(req.params(":aid"));
+            } catch (NumberFormatException e) {}
+            
             Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
             viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
             String takas = "/" + req.params(":id") + "/" + req.params(":aid") + "?sivu=" + viestiDao.sivunumerot(Integer.parseInt(req.params(":aid"))).size();
@@ -101,7 +109,10 @@ public class Main {
                 return "Virhe! Liian pitkä viesti, käyttäjä tai aihe";
             }
 
-            int alueId = Integer.parseInt(req.params(":id"));
+            int alueId = -1;
+            try {
+                alueId = Integer.parseInt(req.params(":id"));
+            } catch (NumberFormatException e) {}
             aiheDao.teeUusi(alueId, aihe);
             int aiheId = aiheDao.etsiUusin(alueId).getId();
             Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
