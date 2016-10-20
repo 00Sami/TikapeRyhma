@@ -30,7 +30,7 @@
         </table>
         <ul>
             <tr th:each="sivu : ${sivut}">
-                <td>  <a th:href="@{~/{id}/{aid}?sivu={sivu}(id=${alue}, aid=${aihe}, sivu=${sivu})}" th:text="${sivu}">sivu</a></td>
+                <td>  <a th:href="@{~/{id}/{aid}?sivu={sivu}(id=${alue}, aid=${aihe.id}, sivu=${sivu})}" th:text="${sivu}">sivu</a></td>
             </tr>
         </ul>
 
