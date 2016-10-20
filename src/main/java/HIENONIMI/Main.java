@@ -17,11 +17,18 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-         if (System.getenv("PORT") != null) {
+        if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
         }
-        
-        Database database = new Database("jdbc:sqlite:HIENONIMI.db");
+
+        // käytetään oletuksena paikallista sqlite-tietokantaa
+        String jdbcOsoite = "jdbc:sqlite:HIENONIMI.db";
+        // jos heroku antaa käyttöömme tietokantaosoitteen, otetaan se käyttöön
+        if (System.getenv("DATABASE_URL") != null) {
+            jdbcOsoite = System.getenv("DATABASE_URL");
+        }
+
+        Database database = new Database(jdbcOsoite);
         database.init();
 
         AlueDao alueDao = new AlueDao(database);
@@ -60,7 +67,7 @@ public class Main {
             //jos sivujen määrä = 1, niin ei lisätä sivuja joten yksisivuisessa threadissä ei näy sivunumeroa
             if (sivut.size() > 1) {
                 map.put("sivut", sivut);
-            } 
+            }
             return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
 
