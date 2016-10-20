@@ -96,8 +96,8 @@ public class Database {
     private List<String> postgreLauseet() {
         ArrayList<String> lista = new ArrayList<>();
         lista.add("CREATE TABLE Alue (id SERIAL PRIMARY KEY, nimi varchar(30) NOT NULL);");
-        lista.add("CREATE TABLE Aihe (id SERIAL PRIMARY KEY, alue_id integer NOT NULL, nimi varchar(50) NOT NULL, FOREIGN KEY (alue_id) REFERENCES Alue(id));");
-        lista.add("CREATE TABLE Viesti (id SERIAL PRIMARY KEY,	aihe_id integer NOT NULL, kayttaja_id integer NOT NULL, viesti varchar(2000) NOT NULL, aika DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (aihe_id) REFERENCES Aihe(id), FOREIGN KEY (kayttaja_id) REFERENCES Kayttaja(id));");
+        lista.add("CREATE TABLE Aihe (id SERIAL PRIMARY KEY, alue_id integer NOT NULL, nimi varchar(50) NOT NULL, FOREIGN KEY (alue_id) REFERENCES Alue (id));");
+        lista.add("CREATE TABLE Viesti (id SERIAL PRIMARY KEY, aihe_id integer NOT NULL, kayttaja_id integer NOT NULL, viesti varchar(2000) NOT NULL, aika DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (aihe_id) REFERENCES Aihe (id), FOREIGN KEY (kayttaja_id) REFERENCES Kayttaja (id));");
         lista.add("CREATE TABLE Kayttaja (id SERIAL PRIMARY KEY, nimi varchar(25) NOT NULL);");
         lista.add("INSERT INTO Alue (nimi) VALUES ('Ohjelmointikeskustelu')");
         lista.add("INSERT INTO Alue (nimi) VALUES ('Yleinen keskustelu')");
