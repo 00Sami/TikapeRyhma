@@ -12,6 +12,7 @@ public class Database {
 
     public Database(String databaseAddress) throws Exception {
         this.databaseAddress = databaseAddress;
+        this.init();
         this.connection = this.getConnection();
     }
 
@@ -57,7 +58,7 @@ public class Database {
                 String username = dbUri.getUserInfo().split(":")[0];
                 String password = dbUri.getUserInfo().split(":")[1];
                 String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-                this.init();
+                
                 return DriverManager.getConnection(dbUrl, username, password);
             } catch (Throwable t) {
                 System.out.println("Error: " + t.getMessage());
