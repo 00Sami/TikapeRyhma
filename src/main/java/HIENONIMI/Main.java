@@ -29,7 +29,6 @@ public class Main {
         }
 
         Database database = new Database(jdbcOsoite);
-        database.init();
 
         AlueDao alueDao = new AlueDao(database);
         AiheDao aiheDao = new AiheDao(database);

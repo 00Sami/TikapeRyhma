@@ -12,6 +12,7 @@ public class Database {
 
     public Database(String databaseAddress) throws Exception {
         this.databaseAddress = databaseAddress;
+        this.init();
         this.connection = DriverManager.getConnection(databaseAddress);
     }
 
