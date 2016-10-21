@@ -64,11 +64,12 @@ public class Main {
                 map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params(":aid"))));
             }
             List<Integer> sivut = viestiDao.sivunumerot(Integer.parseInt(req.params(":aid")));
-            
-            try {                
+
+            try {
                 map.put("aihe", aiheDao.findOne(Integer.parseInt(req.params(":aid"))));
-            } catch (NumberFormatException e) {}
-            
+            } catch (NumberFormatException e) {
+            }
+
             //jos sivujen määrä = 1, niin ei lisätä sivuja joten yksisivuisessa threadissä ei näy sivunumeroa
             if (sivut.size() > 1) {
                 map.put("sivut", sivut);
@@ -79,18 +80,13 @@ public class Main {
         post("/:id/:aid", (req, res) -> {
             String kayttaja = req.queryParams("kayttaja");
             String viesti = req.queryParams("viesti");
-            if (kayttaja.isEmpty() || viesti.isEmpty()) {
-                return "Virhe! Tyhjä viesti tai kayttaja.";
-            }
 
-            if (viesti.length() > 1999 || kayttaja.length() > 24) {
-                return "Virhe! Liian pitkä viesti tai käyttäjä";
-            }
             int aiheId = -1;
             try {
                 aiheId = Integer.parseInt(req.params(":aid"));
-            } catch (NumberFormatException e) {}
-            
+            } catch (NumberFormatException e) {
+            }
+
             Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
             viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
             String takas = "/" + req.params(":id") + "/" + req.params(":aid") + "?sivu=" + viestiDao.sivunumerot(Integer.parseInt(req.params(":aid"))).size();
@@ -102,17 +98,12 @@ public class Main {
             String kayttaja = req.queryParams("kayttaja");
             String aihe = req.queryParams("aihe");
             String viesti = req.queryParams("viesti");
-            if (kayttaja.isEmpty() || viesti.isEmpty() || aihe.isEmpty()) {
-                return "Virhe! Tyhjä viesti, kayttaja tai aihe.";
-            }
-            if (viesti.length() > 1999 || kayttaja.length() > 24 || aihe.length() > 49) {
-                return "Virhe! Liian pitkä viesti, käyttäjä tai aihe";
-            }
 
             int alueId = -1;
             try {
                 alueId = Integer.parseInt(req.params(":id"));
-            } catch (NumberFormatException e) {}
+            } catch (NumberFormatException e) {
+            }
             aiheDao.teeUusi(alueId, aihe);
             int aiheId = aiheDao.etsiUusin(alueId).getId();
             Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
