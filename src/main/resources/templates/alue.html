@@ -13,6 +13,26 @@
             #footer {margin: 1cm; }
         </style>
 
+        <script type="text/javascript">
+            <!--
+            function tarkastaLomake() {
+                var kayttaja = document.forms["lomake"]["kayttaja"].value;
+                var aihe = document.forms["lomake"]["aihe"].value;
+                var viesti = document.forms["lomake"]["viesti"].value;
+
+                if (kayttaja === "" || aihe === "" || viesti === "") {
+                    alert("Virhe! Täytithän kaikki kentät!");
+                    return false;
+                }
+                                
+                if (kayttaja.length > 24 || viesti.length > 1999 || aihe.length > 49) {
+                    alert("Virhe! Liian pitkä viesti, käyttäjä tai aihe");
+                    return false;
+                }
+
+            }
+            //-->
+        </script>
     </head>
 
     <body style="background-color: rgb(214, 226, 255)">
@@ -32,7 +52,7 @@
         </table>
 
         <span class="lisays">Lisää uusi aihe</span>
-        <form class="lisays" method="POST">
+        <form class="lisays" name="lomake" onsubmit="return tarkastaLomake()" method="post">
             <span>Käyttäjä:</span>
             <br/>
             <input type="text" name="kayttaja"/>
@@ -45,6 +65,7 @@
             <br/>
             <textarea rows="10" cols="50" name="viesti"></textarea>
             <input type="submit" value="Lähetä!"/>
+
         </form>
 
         <footer id="footer">
