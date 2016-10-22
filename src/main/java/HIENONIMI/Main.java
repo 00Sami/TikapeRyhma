@@ -105,7 +105,7 @@ public class Main {
             } catch (NumberFormatException e) {
             }
             aiheDao.teeUusi(alueId, aihe);
-            int aiheId = aiheDao.etsiUusin(alueId).getId();
+            int aiheId = aiheDao.uusimmanViestinId(alueId);
             Kayttaja nykyinen = haeTaiTeeKayttaja(kayttaja, kayttajaDao);
             viestiDao.teeUusi(nykyinen.getId(), aiheId, viesti);
 
