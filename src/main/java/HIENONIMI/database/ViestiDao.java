@@ -13,25 +13,14 @@ public class ViestiDao {
         this.database = database;
     }
 
-    public List<Viesti> findAll(int aiheId) throws SQLException {
-        String komento = "SELECT Viesti.id as id, Viesti.aihe_id as aihe_id, Viesti.kayttaja_id as kayttaja_id, viesti.viesti, viesti.aika, Kayttaja.nimi as kayttaja FROM Viesti INNER JOIN Kayttaja ON Viesti.kayttaja_id = Kayttaja.id WHERE aihe_id = ?";
-        List<Viesti> viestit = database.queryAndCollect(komento, rs -> new Viesti(rs.getInt("id"), rs.getInt("aihe_id"), rs.getInt("kayttaja_id"), rs.getString("viesti"), rs.getString("aika"), rs.getString("kayttaja")), aiheId);
-
-        if (viestit.isEmpty()) {
-            return null;
-        } else {
-            return viestit;
-        }
-    }
-
     public List<Viesti> naytaKymmenen(int aiheId) throws SQLException {
         return naytaKymmenen(aiheId, 1);
     }
 
     public List<Viesti> naytaKymmenen(int aiheId, int sivu) throws SQLException {
 
-        String komento = "SELECT Viesti.id as id, Viesti.aihe_id as aihe_id, Viesti.kayttaja_id as kayttaja_id, viesti.viesti, viesti.aika, Kayttaja.nimi as kayttaja FROM Viesti INNER JOIN Kayttaja ON Viesti.kayttaja_id = Kayttaja.id WHERE aihe_id = ? ORDER BY Viesti.id LIMIT 10 OFFSET " + sivu + "*10-10";
-        List<Viesti> viestit = database.queryAndCollect(komento, rs -> new Viesti(rs.getInt("id"), rs.getInt("aihe_id"), rs.getInt("kayttaja_id"), rs.getString("viesti"), rs.getString("aika"), rs.getString("kayttaja")), aiheId);
+        String komento = "SELECT Viesti.id as id, Viesti.aihe_id as aihe_id, Viesti.kayttaja_id as kayttaja_id, viesti.viesti, viesti.aika, Kayttaja.nimi as kayttaja FROM Viesti INNER JOIN Kayttaja ON Viesti.kayttaja_id = Kayttaja.id WHERE aihe_id = ? ORDER BY Viesti.id LIMIT 10 OFFSET ?*10-10";
+        List<Viesti> viestit = database.queryAndCollect(komento, rs -> new Viesti(rs.getInt("id"), rs.getInt("aihe_id"), rs.getInt("kayttaja_id"), rs.getString("viesti"), rs.getString("aika"), rs.getString("kayttaja")), aiheId, sivu);
 
         if (viestit.isEmpty()) {
             return null;
@@ -41,7 +30,7 @@ public class ViestiDao {
     }
 
     public List<Integer> sivunumerot(int aiheId) throws SQLException {
-        String komento = "SELECT COUNT(Viesti.id) AS maara FROM Viesti INNER JOIN Kayttaja ON Viesti.kayttaja_id = Kayttaja.id WHERE aihe_id = ?";
+        String komento = "SELECT COUNT(Viesti.id) AS maara FROM Viesti WHERE aihe_id = ?";
         int viestimaara = database.queryAndCollect(komento, rs -> rs.getInt("maara"), aiheId).get(0);
         List<Integer> sivut = new ArrayList<>();
         int sivumaara = (int) Math.ceil(viestimaara * 1.0 / 10);
