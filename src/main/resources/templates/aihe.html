@@ -16,10 +16,10 @@
         <script type="text/javascript">
             <!--
         function tarkastaLomake() {
-                var aihe = document.forms["lomake"]["kayttaja"].value;
+                var kayttaja = document.forms["lomake"]["kayttaja"].value;
                 var viesti = document.forms["lomake"]["viesti"].value;
 
-                if (aihe === "" || viesti === "") {
+                if (kayttaja === "" || viesti === "") {
                     alert("Virhe! Täytithän kaikki kentät!");
                     return false;
                 }
