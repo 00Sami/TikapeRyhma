@@ -57,7 +57,6 @@ public class Main {
 
         get("/:id/:aid", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("alue", alueDao.findOne(Integer.parseInt(req.params(":id"))));
             try {
                 map.put("viestit", viestiDao.naytaKymmenen(Integer.parseInt(req.params(":aid")), Integer.parseInt(req.queryParams("sivu"))));
             } catch (Exception e) {
@@ -66,6 +65,7 @@ public class Main {
             List<Integer> sivut = viestiDao.sivunumerot(Integer.parseInt(req.params(":aid")));
 
             try {
+                map.put("alue", alueDao.findOne(Integer.parseInt(req.params(":id"))));
                 map.put("aihe", aiheDao.findOne(Integer.parseInt(req.params(":aid"))));
             } catch (NumberFormatException e) {
             }
